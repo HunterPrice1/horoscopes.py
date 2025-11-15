@@ -6,6 +6,7 @@ from aiogram.types import Message, CallbackQuery
 from aiogram.filters import Command
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.enums import ParseMode
+from aiogram.client.default import DefaultBotProperties
 
 # Настройка логирования
 logging.basicConfig(level=logging.INFO)
@@ -14,7 +15,11 @@ logger = logging.getLogger(__name__)
 # Токен бота (ЗАМЕНИТЕ на новый после создания бота!)
 BOT_TOKEN = "8192982527:AAF0Qvl3utxIrH9VJVhytr1t6Qo7eRmlykY"
 
-bot = Bot(token=BOT_TOKEN, parse_mode=ParseMode.MARKDOWN)
+# Создаем бота с правильными настройками
+bot = Bot(
+    token=BOT_TOKEN,
+    default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN)
+)
 dp = Dispatcher()
 
 # База предсказаний
@@ -63,8 +68,7 @@ async def process_sign(callback: CallbackQuery):
     
     await callback.message.edit_text(
         f"🔮 *{sign_name}*\n\n{prediction}\n\n✨ Пусть звезды благоволят вам!",
-        reply_markup=builder.as_markup(),
-        parse_mode="Markdown"
+        reply_markup=builder.as_markup()
     )
     await callback.answer()
 
@@ -80,6 +84,15 @@ async def back_to_start(callback: CallbackQuery):
         reply_markup=builder.as_markup()
     )
     await callback.answer()
+
+@dp.message(Command("help"))
+async def cmd_help(message: Message):
+    await message.answer(
+        "🌟 *Помощь по боту:*\n\n"
+        "/start - начать работу\n"
+        "/help - показать справку\n\n"
+        "Выбирайте знак зодиака для получения предсказания!"
+    )
 
 @dp.message()
 async def echo(message: Message):
