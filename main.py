@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 async def main():
-    # Используем ваш токен
+    # Используем ваш токен (ЗАМЕНИТЕ НА НОВЫЙ!)
     BOT_TOKEN = "8192982527:AAF0Qvl3utxIrH9VJVhytr1t6Qo7eRmlykY"
     
     if not BOT_TOKEN:
